@@ -1,0 +1,65 @@
+﻿@model ToDoList.Models.TaskToDo
+@using ToDoList.Enums
+
+@{
+    bool isUpdate = Model != null;
+    ViewData["Title"] = (isUpdate ? "Modifier" : "Ajouter") + "Ajouter une tâche";
+}
+
+<h1>@(isUpdate ? "Modifier" : "Ajouter")</h1>
+
+<h4>TaskToDo</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="SubmitTask">
+            <input asp-for="Id" type="hidden" class="form-control" />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                @if (isUpdate)
+                {
+                    <label asp-for="Title" class="control-label"></label>
+                    <select asp-for="Title" class="form-control">
+                        @foreach (var enumValue in Enum.GetValues(Model!.Title.GetType()))
+                        {
+                            <option value="@enumValue">@enumValue</option>
+                        }
+                    </select>
+                }
+                else
+                {
+                    <div>
+                        <label asp-for="Title" class="control-label"></label>
+                    </div>
+                    <select asp-for="Title" asp-items="Html.GetEnumSelectList<ToDoList.Enums.TitleEnum>()">
+                        <option selected="selected" value="">Please select</option>
+                    </select>
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                }
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StatutTask" class="control-label"></label>
+                <input asp-for="StatutTask" class="form-control" />
+                <span asp-validation-for="StatutTask" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="@(isUpdate? "Modifier" : "Ajouter" )" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

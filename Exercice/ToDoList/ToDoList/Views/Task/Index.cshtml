@@ -1,0 +1,61 @@
+﻿@model List<ToDoList.Models.TaskToDo>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Form">Create New</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameForInnerType((TaskToDo model) => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameForInnerType((TaskToDo model) => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameForInnerType((TaskToDo model) => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameForInnerType((TaskToDo model) => model.StatutTask)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @if (item.StatutTask == false)
+                    {
+                    <p>Tâche en cours...</p>
+                    }
+                    else
+                    {
+                    <p>Tâches effectuées !</p>
+                    }
+                </td>
+                <td>
+                    <a class="btn btn-warning" asp-action="Form" asp-route-id="@item.Id">Modifier la tâche</a>
+                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Supprimer</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
